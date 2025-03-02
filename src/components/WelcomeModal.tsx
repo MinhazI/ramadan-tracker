@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 
-const WelcomeModal = () => {
-  const [open, setOpen] = useState(false);
+interface iWelcomeModal {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+const WelcomeModal = ({ open, setOpen }: iWelcomeModal) => {
   useEffect(() => {
     const hasSeenModal = localStorage.getItem("seenWelcomeModal");
 

@@ -12,7 +12,7 @@ const TharaweehHistory = ({ prayerData }: PrayerHistory) => {
   return (
     <>
       <h2 className="text-bold mt-15 mb-2 text-center">
-        A list of your tharaweeh prayers.
+        A list of your tharaweeh prayers
       </h2>
       <div className="border-2 border-slate-900 rounded-2xl p-2">
         <Table>

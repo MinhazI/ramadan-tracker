@@ -10,6 +10,7 @@ import WelcomeModal from "./components/WelcomeModal";
 function App() {
   const [tharaweehCount, setTharaweehCount] = useState(0);
   const [prayerData, setPrayerData] = useState({} as iPrayer);
+  const [openModal, setOpenModal] = useState(false);
 
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const currentIslamicDate = DateTime.now()
@@ -30,9 +31,9 @@ function App() {
 
   return (
     <>
-      <Navigation />
+      <Navigation setOpenModal={setOpenModal} />
       <div className="flex flex-col items-center justify-center min-h-[90vh]">
-        <WelcomeModal />
+        <WelcomeModal open={openModal} setOpen={setOpenModal} />
         <div className="flex flex-col max-w-[500px] items-center">
           <Counter
             tharaweehCount={tharaweehCount}
