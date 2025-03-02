@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import Counter from "./components/counter";
 
 function App() {
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
+      <Counter />
     </div>
   );
 }
