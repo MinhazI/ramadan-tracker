@@ -1,10 +1,16 @@
 import Counter from "./components/Counter";
+import Footer from "./components/Footer";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Counter />
-    </div>
+    <>
+      <Navigation />
+      <div className="flex flex-col items-center justify-center min-h-[90vh]">
+        <Counter />
+      </div>
+      <Footer />
+    </>
   );
 }
 

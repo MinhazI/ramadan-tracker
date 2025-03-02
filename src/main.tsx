@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App.tsx";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "./components/theme-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-    <Analytics />
-    <Toaster />
+    <ThemeProvider>
+      <App />
+      <Analytics />
+      <Toaster />
+    </ThemeProvider>
   </StrictMode>
 );
