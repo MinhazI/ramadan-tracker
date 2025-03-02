@@ -33,7 +33,7 @@ const ShareButton = () => {
     <button
       onClick={handleShare}
       disabled={saving} // Disable button while sharing
-      className="rounded-full p-2 border-2 text-white text-xs"
+      className="rounded-full p-2 border-2 text-xs mr-2"
     >
       {saving ? "Sharing..." : "Share this with friends and family"}
     </button>
