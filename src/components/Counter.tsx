@@ -9,20 +9,24 @@ import {
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { Minus, Plus } from "lucide-react";
+import { Loader2, Minus, Plus } from "lucide-react";
 
 const Counter = () => {
-  useEffect(() => {
-    localStorage.getItem("ramadan-tracker");
-  }, []);
-
+  const [tharaweehCount, setTharaweehCount] = useState(0);
+  const [saving, setSaving] = useState(false);
   const currentIslamicDate = DateTime.now()
     .setZone("Asia/Colombo")
     .minus({ day: 1 })
     .reconfigure({ outputCalendar: "islamic" })
     .toFormat("LLLL dd");
 
-  const [tharaweehCount, setTharaweehCount] = useState(0);
+  useEffect(() => {
+    const prayerData = JSON.parse(
+      localStorage.getItem("ramadanTracker") || "{}"
+    );
+
+    setTharaweehCount(prayerData[currentIslamicDate] || 0);
+  }, [currentIslamicDate]);
 
   const reducePrayerCount = () => {
     if (tharaweehCount > 0) setTharaweehCount(tharaweehCount - 1);
@@ -30,6 +34,18 @@ const Counter = () => {
 
   const addPrayerCount = () => {
     if (tharaweehCount < 10) setTharaweehCount(tharaweehCount + 1);
+  };
+
+  const savePrayer = () => {
+    setSaving(true);
+    const prayerData = JSON.parse(
+      localStorage.getItem("ramadanTracker") || "{}"
+    );
+
+    prayerData[currentIslamicDate] = tharaweehCount;
+
+    localStorage.setItem("ramadanTracker", JSON.stringify(prayerData));
+    setSaving(false);
   };
   return (
     <Card>
@@ -56,7 +72,14 @@ const Counter = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant={"default"}>Save</Button>
+        <Button
+          variant={"default"}
+          onClick={() => savePrayer()}
+          disabled={saving || false}
+        >
+          {saving && <Loader2 className="animate-spin" />}
+          Save
+        </Button>
       </CardFooter>
     </Card>
   );
