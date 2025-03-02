@@ -6,28 +6,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DateTime } from "luxon";
 import { Loader2, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-const Counter = () => {
-  const [tharaweehCount, setTharaweehCount] = useState(0);
+interface iCounter {
+  tharaweehCount: number;
+  setTharaweehCount: React.Dispatch<React.SetStateAction<number>>;
+  currentIslamicDate: string;
+}
+
+const Counter = ({
+  tharaweehCount,
+  setTharaweehCount,
+  currentIslamicDate,
+}: iCounter) => {
   const [saving, setSaving] = useState(false);
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const currentIslamicDate = DateTime.now()
-    .setZone(userTimeZone)
-    .minus({ day: 1 })
-    .reconfigure({ outputCalendar: "islamic" })
-    .toFormat("LLLL dd");
-
-  useEffect(() => {
-    const prayerData = JSON.parse(
-      localStorage.getItem("ramadanTracker") || "{}"
-    );
-
-    setTharaweehCount(prayerData[currentIslamicDate]?.tharaweehCount || 0);
-  }, [currentIslamicDate]);
 
   const reducePrayerCount = () => {
     if (tharaweehCount > 0) {
