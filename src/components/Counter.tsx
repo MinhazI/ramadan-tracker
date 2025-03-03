@@ -10,6 +10,16 @@ import { useState } from "react";
 import { DateTime } from "luxon";
 import { Loader2, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface iCounter {
   tharaweehCount: number;
@@ -23,12 +33,14 @@ const Counter = ({
   currentIslamicDate,
 }: iCounter) => {
   const [saving, setSaving] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const reducePrayerCount = () => {
     if (tharaweehCount > 0) {
       setTharaweehCount(tharaweehCount - 1);
       savePrayer(tharaweehCount - 1);
     }
+    setOpenConfirmation(false);
   };
 
   const addPrayerCount = () => {
@@ -83,10 +95,27 @@ const Counter = ({
       </CardHeader>
       <CardContent>
         <div className="flex items-center space-x-4 justify-between">
+          <AlertDialog open={openConfirmation}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to reduce 1 count from your tharaweeh
+                  prayer?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => reducePrayerCount()}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Button
             variant="outline"
             size="icon"
-            onClick={() => reducePrayerCount()}
+            onClick={() => tharaweehCount > 0 && setOpenConfirmation(true)}
             disabled={saving}
             className="rounded-4xl"
           >
