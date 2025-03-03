@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <div className="text-center py-4 text-xs">
-      Another initiative by{" "}
+      A pet project by{" "}
       <a
         href="https://minhazimohamed.com"
         target="_blank"
