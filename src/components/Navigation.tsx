@@ -10,7 +10,7 @@ interface iNavigation {
 
 const Navigation = ({ setOpenModal, todaysDate }: iNavigation) => {
   return (
-    <div className="flex py-2 mb-10 pr-3 bg-green-100 dark:bg-accent">
+    <div className="flex py-2 mb-10 pr-3 bg-green-100 dark:bg-secondary">
       <div className="flex-1/2 pl-2">
         <h1 className="font-bold">Ramadan Tracker</h1>
         <span className="text-xs">{todaysDate}</span>
