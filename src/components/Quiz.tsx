@@ -13,18 +13,37 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import {
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  Table,
+  TableCell,
+} from "./ui/table";
+import { CircleCheck, CircleX, RefreshCwIcon } from "lucide-react";
+
+interface iResult {
+  questionTitle: string;
+  questionIndex: number;
+  firstTry: boolean;
+  numberOfRetries: number;
+  missedTheAnswer: boolean;
+}
 
 const Quiz = () => {
   const [quizData, setQuizData] = useState<iQuiz>();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Change to string
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showIncorrectAnswerMessage, setShowIncorrectAnswerMessage] =
     useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState<boolean | null>(
     null
   );
+  const [retries, setRetries] = useState<number>(0);
+  const [results, setResults] = useState<iResult[]>([]);
 
   useEffect(() => {
     getSurahs();
@@ -41,24 +60,52 @@ const Quiz = () => {
 
   const playAgain = async () => {
     setCurrentQuestionIndex(0);
+    setNextButtonDisabled(false);
+    setPreviousButtonDisabled(true);
     setShowSuccessMessage(false);
     getSurahs();
   };
 
-  const submit = () => {
+  const submit = (questionTitle: string) => {
     setShowIncorrectAnswerMessage(false);
     const selectedOption = quizData?.data[currentQuestionIndex].options.find(
       (option) => option.text === selectedAnswer
     );
     if (selectedOption?.value === 1) {
+      setResults((prevResults) => [
+        ...prevResults,
+        {
+          questionTitle,
+          questionIndex: currentQuestionIndex,
+          firstTry: retries === 0,
+          numberOfRetries: retries,
+          missedTheAnswer: false,
+        },
+      ]);
       setSelectedAnswer(null);
       GoToNextQuestion();
     } else {
-      setShowIncorrectAnswerMessage(true);
+      if (retries < 2) {
+        setShowIncorrectAnswerMessage(true);
+        setRetries(retries + 1);
+      } else {
+        setResults((prevResults) => [
+          ...prevResults,
+          {
+            questionTitle,
+            questionIndex: currentQuestionIndex,
+            firstTry: retries === 0,
+            numberOfRetries: retries,
+            missedTheAnswer: true,
+          },
+        ]);
+        GoToNextQuestion();
+      }
     }
   };
 
   const GoToNextQuestion = () => {
+    setRetries(0);
     if (currentQuestionIndex < 9) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setPreviousButtonDisabled(false);
@@ -124,7 +171,9 @@ const Quiz = () => {
           <div className="mt-5">
             <Button
               variant={"outline"}
-              onClick={() => submit()}
+              onClick={() =>
+                submit(quizData?.data[currentQuestionIndex].question || "")
+              }
               disabled={nextButtonDisabled}
             >
               Submit Answer
@@ -141,28 +190,56 @@ const Quiz = () => {
       </Card>
     );
   } else if (showSuccessMessage) {
+    console.log(results);
     return (
-      <Card className="p-5 max-w-full md:max-w-[500px] text-center">
-        <CardHeader className="text-center text-2xl">
-          Congratulations
+      <Card className="p-5 max-w-full md:max-w-[600px] text-center mx-auto">
+        <CardHeader className="text-center text-2xl font-semibold mb-4">
+          Your Quiz Results
         </CardHeader>
         <CardContent>
           {showSuccessMessage && (
-            <>
-              <p className="text-5xl pb-4">🎉</p>
-              <p className="text-green-700 text-2xl">
-                Mashaa Allah! You have got all the questions correct.
-              </p>
-              <p className=" text-xl mt-2">
-                If you want to play with new questions, press the button below.
-              </p>
-            </>
+            <Table className="mx-auto text-center">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-center">No.</TableHead>
+                  <TableHead className="text-center">Question</TableHead>
+                  <TableHead className="text-center">Retries</TableHead>
+                  <TableHead className="text-center">Correct?</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {results.map((result, key) => (
+                  <TableRow key={key} className="text-center">
+                    <TableCell className="text-center">
+                      #{result.questionIndex + 1}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {result.questionTitle}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {result.numberOfRetries}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {result.missedTheAnswer ? (
+                        <CircleX color="var(--destructive)" />
+                      ) : (
+                        <CircleCheck color="var(--primary)" />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </CardContent>
         <CardFooter className="justify-center">
-          <div className="mt-5">
+          <div className="mt-5 text-center">
+            <p className="text-sm mb-5">
+              Ready for a new challenge? Click below to start again with fresh
+              questions!
+            </p>
             <Button variant={"outline"} onClick={() => playAgain()}>
-              Play again
+              Play Again <RefreshCwIcon />
             </Button>
           </div>
         </CardFooter>
