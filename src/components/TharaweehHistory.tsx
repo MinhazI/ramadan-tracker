@@ -7,20 +7,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PrayerHistory } from "@/interfaces/iPrayer";
+import { Card, CardContent, CardTitle } from "./ui/card";
 
 const TharaweehHistory = ({ prayerData }: PrayerHistory) => {
   return (
-    <>
-      <h2 className="text-bold mb-2 text-center">
-        A list of your tharaweeh prayers
-      </h2>
-      <div className="border-2 border-slate-900 rounded-2xl p-2">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Date</TableHead>
+    <Card className="max-w-full md:max-w-[500px]">
+      <CardTitle className=" text-center capitalize">
+        A history of your tharaweeh prayers
+      </CardTitle>
+      <CardContent>
+        <Table className="">
+          <TableHeader className="">
+            <TableRow className="">
+              <TableHead>Date</TableHead>
               <TableHead>Count</TableHead>
-              <TableHead className="text-right">Last Updated</TableHead>
+              <TableHead>Last Updated</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -31,17 +32,15 @@ const TharaweehHistory = ({ prayerData }: PrayerHistory) => {
               )
               .map(([date, entry]) => (
                 <TableRow key={date}>
-                  <TableCell className="font-medium">{date}</TableCell>
+                  <TableCell>{date}</TableCell>
                   <TableCell>{entry.tharaweehCount}</TableCell>
-                  <TableCell className="text-right">
-                    {entry.lastUpdated}
-                  </TableCell>
+                  <TableCell>{entry.lastUpdated}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
-      </div>
-    </>
+      </CardContent>
+    </Card>
   );
 };
 

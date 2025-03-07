@@ -22,6 +22,7 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Change to string
   const [showIncorrectAnswerMessage, setShowIncorrectAnswerMessage] =
     useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
 
   useEffect(() => {
     getSurahs();
@@ -29,29 +30,39 @@ const Quiz = () => {
 
   const getSurahs = async () => {
     const data = await guessSurah.bySurah({
-      amount: 5,
+      amount: 10,
       select: generateNumbersForQuranQuiz(),
     });
 
     setQuizData(data);
   };
 
+  const playAgain = async () => {
+    setCurrentQuestionIndex(0);
+    setShowSuccessMessage(false);
+    getSurahs();
+  };
+
   const submit = () => {
     setShowIncorrectAnswerMessage(false);
-    // Check if the selected answer's value is 1 (correct answer)
     const selectedOption = quizData?.data[currentQuestionIndex].options.find(
       (option) => option.text === selectedAnswer
     );
     if (selectedOption?.value === 1) {
-      setSelectedAnswer(null); // Reset selected answer
-      if (currentQuestionIndex < 4) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setPreviousButtonDisabled(false);
-      } else {
-        setNextButtonDisabled(true);
-      }
+      setSelectedAnswer(null);
+      GoToNextQuestion();
     } else {
       setShowIncorrectAnswerMessage(true);
+    }
+  };
+
+  const GoToNextQuestion = () => {
+    if (currentQuestionIndex < 9) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setPreviousButtonDisabled(false);
+    } else {
+      setNextButtonDisabled(true);
+      setShowSuccessMessage(true);
     }
   };
 
@@ -63,62 +74,99 @@ const Quiz = () => {
     }
   };
 
-  return (
-    <Card className="p-5 max-w-full md:max-w-[500px] text-center">
-      <CardHeader className="text-center">
-        {` Qu'ran Question ${currentQuestionIndex + 1} of 5`}
-      </CardHeader>
-      <CardDescription>
-        Test your knowledge on the Qu'ran by answering this quiz
-      </CardDescription>
-      <CardTitle>
-        <p className="mb-5">In which surah does the following ayath come: </p>
-        <p className="mb-5 tracking-widest font-light text-2xl">
-          {quizData?.data[currentQuestionIndex].question}
-        </p>
-        {showIncorrectAnswerMessage && (
-          <p className="text-red-500 text-sm">
-            Oops! You have selected the incorrect answer. Please try again.
+  if (!showSuccessMessage) {
+    return (
+      <Card className="p-5 max-w-full md:max-w-[500px] text-center">
+        <CardHeader className="text-center">
+          {` Qu'ran Question ${currentQuestionIndex + 1} of 10`}
+        </CardHeader>
+        <CardDescription>
+          Test your knowledge on the Qu'ran by answering this quiz
+        </CardDescription>
+        <CardTitle>
+          <p className="mb-5">In which surah does the following ayath come: </p>
+          <p className="mb-5 tracking-widest font-light text-3xl leading-14">
+            {quizData?.data[currentQuestionIndex].question}
           </p>
-        )}
-      </CardTitle>
-      <CardContent>
-        <RadioGroup
-          value={selectedAnswer || ""} // Use selectedAnswer directly
-          onValueChange={(value) => setSelectedAnswer(value)} // Update selectedAnswer
-        >
-          {quizData?.data[currentQuestionIndex].options.map((answer, key) => (
-            <div className="flex items-center space-x-2" key={key}>
-              <RadioGroupItem
-                value={answer.text} // Use answer.text as the unique value
-                id={answer.text}
-                onClick={() => setShowIncorrectAnswerMessage(false)}
-              />
-              <Label htmlFor={answer.text}>Surah {answer.text}</Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </CardContent>
-      <CardFooter>
-        <div className="mt-5">
-          <Button
-            variant={"outline"}
-            onClick={() => submit()}
-            disabled={nextButtonDisabled}
+          {showIncorrectAnswerMessage && (
+            <p className="text-red-500 text-sm">
+              Oops! You have selected the incorrect answer. Please try again.
+            </p>
+          )}
+
+          {showSuccessMessage && (
+            <p className="text-green-700 text-sm">
+              Mashaa Allah! You have got all the questions correct. <br /> If
+              you want to play with new questions, refresh the page.
+            </p>
+          )}
+        </CardTitle>
+        <CardContent>
+          <RadioGroup
+            value={selectedAnswer || ""}
+            onValueChange={(value) => setSelectedAnswer(value)}
           >
-            Submit Answer
-          </Button>
-          <Button
-            variant={"link"}
-            onClick={() => GoToPreviousQuestion()}
-            disabled={previousButtonDisabled}
-          >
-            Previous Question
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
-  );
+            {quizData?.data[currentQuestionIndex].options.map((answer, key) => (
+              <div className="flex items-center space-x-2" key={key}>
+                <RadioGroupItem
+                  value={answer.text}
+                  id={answer.text}
+                  onClick={() => setShowIncorrectAnswerMessage(false)}
+                />
+                <Label htmlFor={answer.text}>Surah {answer.text}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </CardContent>
+        <CardFooter className="justify-center">
+          <div className="mt-5">
+            <Button
+              variant={"outline"}
+              onClick={() => submit()}
+              disabled={nextButtonDisabled}
+            >
+              Submit Answer
+            </Button>
+            <Button
+              variant={"link"}
+              onClick={() => GoToPreviousQuestion()}
+              disabled={previousButtonDisabled}
+            >
+              Previous Question
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
+    );
+  } else if (showSuccessMessage) {
+    return (
+      <Card className="p-5 max-w-full md:max-w-[500px] text-center">
+        <CardHeader className="text-center text-2xl">
+          Congratulations
+        </CardHeader>
+        <CardContent>
+          {showSuccessMessage && (
+            <>
+              <p className="text-5xl pb-4">🎉</p>
+              <p className="text-green-700 text-2xl">
+                Mashaa Allah! You have got all the questions correct.
+              </p>
+              <p className=" text-xl mt-2">
+                If you want to play with new questions, press the button below.
+              </p>
+            </>
+          )}
+        </CardContent>
+        <CardFooter className="justify-center">
+          <div className="mt-5">
+            <Button variant={"outline"} onClick={() => playAgain()}>
+              Play again
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
+    );
+  }
 };
 
 export default Quiz;

@@ -39,7 +39,7 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 w-full px-4">
             <Quiz />
 
-            <div className="flex flex-col gap-7 max-w-full md:max-w-[500px]">
+            <div className="flex flex-col gap-7">
               <Counter
                 tharaweehCount={tharaweehCount}
                 setTharaweehCount={setTharaweehCount}
