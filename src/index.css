@@ -5,73 +5,102 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
+  /* Background */
+  --background: oklch(
+    0.95 0.015 135.895
+  ); /* Soft green-gray background for a subtle touch of green */
 
-  --foreground: oklch(0.129 0.042 264.695);
+  /* Foreground */
+  --foreground: oklch(0.129 0.042 264.695); /* Dark gray text */
 
-  --card: oklch(1 0 0);
+  /* Card */
+  --card: oklch(
+    0.98 0.01 135.895
+  ); /* Light, near-white with a subtle greenish tint */
+  --card-foreground: oklch(0.129 0.042 264.695); /* Dark text for cards */
 
-  --card-foreground: oklch(0.129 0.042 264.695);
+  /* Popover */
+  --popover: oklch(0.98 0.03 135.895); /* Light green-gray popover background */
+  --popover-foreground: oklch(0.129 0.042 264.695); /* Dark text in popover */
 
-  --popover: oklch(1 0 0);
+  /* Primary */
+  --primary: oklch(
+    0.477 0.036 141.431
+  ); /* Calming vibrant green for primary buttons, links, etc. */
+  --primary-foreground: oklch(1 0 0); /* White text for primary elements */
 
-  --popover-foreground: oklch(0.129 0.042 264.695);
+  /* Secondary */
+  --secondary: oklch(
+    0.768 0.15 140.178
+  ); /* Soft muted green for secondary elements */
+  --secondary-foreground: oklch(
+    0.129 0.042 264.695
+  ); /* Dark text for secondary elements */
 
-  --primary: oklch(0.208 0.042 265.755);
+  /* Muted */
+  --muted: oklch(
+    0.95 0.015 135.895
+  ); /* Muted background with a slight greenish tint */
+  --muted-foreground: oklch(
+    0.554 0.046 257.417
+  ); /* Muted text for less important content */
 
-  --primary-foreground: oklch(0.984 0.003 247.858);
+  /* Accent */
+  --accent: oklch(
+    0.477 0.24 120.431
+  ); /* Rich green accent for elements like buttons and highlights */
 
-  --secondary: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(1 0 0); /* White text on accent elements */
 
-  --secondary-foreground: oklch(0.208 0.042 265.755);
+  /* Destructive */
+  --destructive: oklch(0.577 0.245 27.325); /* Soft red for errors */
+  --destructive-foreground: oklch(
+    1 0 0
+  ); /* White text for destructive elements */
 
-  --muted: oklch(0.968 0.007 247.896);
+  /* Border */
+  --border: oklch(
+    0.477 0.036 141.431
+  ); /* Soft green border color for consistency */
 
-  --muted-foreground: oklch(0.554 0.046 257.417);
+  /* Input */
+  --input: oklch(
+    0.554 0.046 257.417
+  ); /* Input fields with subtle green-gray background */
 
-  --accent: oklch(0.968 0.007 247.896);
+  /* Ring */
+  --ring: oklch(0.704 0.04 256.788); /* Soft blue ring for focus states */
 
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  /* Chart Colors */
+  --chart-1: oklch(0.646 0.222 41.116); /* Greenish chart accent */
+  --chart-2: oklch(0.6 0.118 184.704); /* Soft purple */
+  --chart-3: oklch(0.398 0.07 227.392); /* Blue */
+  --chart-4: oklch(0.828 0.189 84.429); /* Yellow */
+  --chart-5: oklch(0.769 0.188 70.08); /* Orange */
 
-  --destructive: oklch(0.577 0.245 27.325);
-
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-
-  /* --border: oklch(0.929 0.013 255.508); */
-  --border: oklch(0.929 0.013 255.508);
-
-  /* --input: oklch(0.929 0.013 255.508); */
-  --input: oklch(0.554 0.046 257.417);
-
-  --ring: oklch(0.704 0.04 256.788);
-
-  --chart-1: oklch(0.646 0.222 41.116);
-
-  --chart-2: oklch(0.6 0.118 184.704);
-
-  --chart-3: oklch(0.398 0.07 227.392);
-
-  --chart-4: oklch(0.828 0.189 84.429);
-
-  --chart-5: oklch(0.769 0.188 70.08);
-
+  /* Radius (for rounded corners) */
   --radius: 0.625rem;
 
-  --sidebar: oklch(0.984 0.003 247.858);
+  /* Sidebar */
+  --sidebar: oklch(0.95 0.015 135.895); /* Green-gray sidebar background */
+  --sidebar-foreground: oklch(0.129 0.042 264.695); /* Dark text in sidebar */
 
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(
+    0.477 0.036 141.431
+  ); /* Calming vibrant green sidebar primary elements */
+  --sidebar-primary-foreground: oklch(
+    1 0 0
+  ); /* White text in sidebar primary items */
 
-  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-accent: oklch(
+    0.477 0.036 141.431
+  ); /* Soft green accent in sidebar */
+  --sidebar-accent-foreground: oklch(
+    1 0 0
+  ); /* White text for sidebar accent items */
 
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-
-  --sidebar-border: oklch(0.929 0.013 255.508);
-
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar-border: oklch(0.477 0.036 141.431); /* Soft green sidebar border */
+  --sidebar-ring: oklch(0.704 0.04 256.788); /* Focus ring for sidebar */
 }
 
 .dark {
