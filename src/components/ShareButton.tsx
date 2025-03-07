@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 
 const ShareButton = () => {
-  const [saving, setSaving] = useState(false); // State for managing button disable
+  const [saving, setSaving] = useState(false);
 
   const shareData = {
-    title: "Ramadan Tharaweeh Tracker",
-    text: `I’m using the Ramadan Tracker to keep track of my tharaweeh prayers, and it’s been really helpful. You can also try the app by visiting the link below:`,
-    url: window.location.href, // Use the current page URL
+    title: "Ramadan Tracker",
+    text: `I'm using Ramadan Tracker to test my knowledge with the Quran Quiz and keep track of my Tharaweeh prayers this Ramadan! More exciting features are coming soon. Try it out here:`,
+    url: window.location.href,
   };
 
   const handleShare = async () => {
@@ -20,10 +20,9 @@ const ShareButton = () => {
       } catch (error) {
         console.error("Error sharing:", error);
       } finally {
-        setSaving(false); // Ensure saving is false after the share process
+        setSaving(false);
       }
     } else {
-      // Fallback: If share isn't supported, alert or provide alternative options
       alert(
         "Your browser doesn't support the Web Share API. You can manually share the link."
       );
