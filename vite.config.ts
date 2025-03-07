@@ -16,7 +16,7 @@ export default defineConfig({
     manifest: {
       name: 'Ramadan Tracker',
       short_name: 'Ramadan Tracker',
-      theme_color: '#060028',
+      theme_color: '#2e7d32',
       icons: [
         {
           "src": "manifest-icon-192.maskable.png",
