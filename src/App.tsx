@@ -6,6 +6,7 @@ import { DateTime } from "luxon";
 import TharaweehHistory from "./components/TharaweehHistory";
 import iPrayer from "./interfaces/iPrayer";
 import WelcomeModal from "./components/WelcomeModal";
+import Quiz from "./components/Quiz";
 
 function App() {
   const [tharaweehCount, setTharaweehCount] = useState(0);
@@ -32,15 +33,23 @@ function App() {
   return (
     <>
       <Navigation setOpenModal={setOpenModal} />
-      <div className="flex flex-col items-center justify-center min-h-[90vh]">
-        <WelcomeModal open={openModal} setOpen={setOpenModal} />
-        <div className="flex flex-col max-w-[500px] items-center">
-          <Counter
-            tharaweehCount={tharaweehCount}
-            setTharaweehCount={setTharaweehCount}
-            currentIslamicDate={currentIslamicDate}
-          />
-          <TharaweehHistory prayerData={prayerData} />
+      <WelcomeModal open={openModal} setOpen={setOpenModal} />
+      <div className="min-h-[90vh]">
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 w-full px-4">
+            <Quiz />
+
+            <div className="flex flex-col gap-7 max-w-full md:max-w-[500px]">
+              <Counter
+                tharaweehCount={tharaweehCount}
+                setTharaweehCount={setTharaweehCount}
+                currentIslamicDate={currentIslamicDate}
+              />
+              <div className="items-center">
+                <TharaweehHistory prayerData={prayerData} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />
