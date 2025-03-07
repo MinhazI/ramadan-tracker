@@ -3,12 +3,16 @@ import tailwindcss from "@tailwindcss/vite"
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), VitePWA({
+  plugins: [react(), tailwindcss(), chunkSplitPlugin(), VitePWA({
     registerType: 'autoUpdate',
     includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+    workbox: {
+      maximumFileSizeToCacheInBytes: 5 * 1024 ** 2, // 5 MB or set to something else
+    },
     manifest: {
       name: 'Ramadan Tracker',
       short_name: 'Ramadan Tracker',
@@ -45,16 +49,5 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[1].split('/')[0].toString();
-          }
-        }
-      }
-    }
   }
 })
