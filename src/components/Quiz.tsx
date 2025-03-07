@@ -19,7 +19,7 @@ const Quiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Change to string
   const [showIncorrectAnswerMessage, setShowIncorrectAnswerMessage] =
     useState(false);
 
@@ -38,8 +38,12 @@ const Quiz = () => {
 
   const submit = () => {
     setShowIncorrectAnswerMessage(false);
-    if (selectedAnswer === 1) {
-      setSelectedAnswer(null);
+    // Check if the selected answer's value is 1 (correct answer)
+    const selectedOption = quizData?.data[currentQuestionIndex].options.find(
+      (option) => option.text === selectedAnswer
+    );
+    if (selectedOption?.value === 1) {
+      setSelectedAnswer(null); // Reset selected answer
       if (currentQuestionIndex < 4) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setPreviousButtonDisabled(false);
@@ -58,10 +62,11 @@ const Quiz = () => {
       setPreviousButtonDisabled(true);
     }
   };
+
   return (
     <Card className="p-5 max-w-full md:max-w-[500px] text-center">
       <CardHeader className="text-center">
-        {` Qu'ran Question ${currentQuestionIndex} of 5`}
+        {` Qu'ran Question ${currentQuestionIndex + 1} of 5`}
       </CardHeader>
       <CardDescription>
         Test your knowledge on the Qu'ran by answering this quiz
@@ -78,19 +83,16 @@ const Quiz = () => {
         )}
       </CardTitle>
       <CardContent>
-        <RadioGroup>
+        <RadioGroup
+          value={selectedAnswer || ""} // Use selectedAnswer directly
+          onValueChange={(value) => setSelectedAnswer(value)} // Update selectedAnswer
+        >
           {quizData?.data[currentQuestionIndex].options.map((answer, key) => (
             <div className="flex items-center space-x-2" key={key}>
               <RadioGroupItem
-                value={
-                  answer.value === 1 ? answer.value.toString() : answer.text
-                }
+                value={answer.text} // Use answer.text as the unique value
                 id={answer.text}
-                onClick={() => {
-                  setSelectedAnswer(answer.value);
-                  setShowIncorrectAnswerMessage(false);
-                  setNextButtonDisabled(false);
-                }}
+                onClick={() => setShowIncorrectAnswerMessage(false)}
               />
               <Label htmlFor={answer.text}>Surah {answer.text}</Label>
             </div>
