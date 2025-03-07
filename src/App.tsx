@@ -2,23 +2,19 @@ import { useEffect, useState } from "react";
 import Counter from "./components/Counter";
 import Footer from "./components/Footer";
 import Navigation from "./components/Navigation";
-import { DateTime } from "luxon";
 import TharaweehHistory from "./components/TharaweehHistory";
 import iPrayer from "./interfaces/iPrayer";
 import WelcomeModal from "./components/WelcomeModal";
 import Quiz from "./components/Quiz";
+import { getIslamicDateMonth, getIslamicDateMonthYear } from "./utils/Date";
 
 function App() {
   const [tharaweehCount, setTharaweehCount] = useState(0);
   const [prayerData, setPrayerData] = useState({} as iPrayer);
   const [openModal, setOpenModal] = useState(false);
 
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const currentIslamicDate = DateTime.now()
-    .setZone(userTimeZone)
-    .minus({ day: 1 })
-    .reconfigure({ outputCalendar: "islamic" })
-    .toFormat("LLLL dd");
+  const currentIslamicDate = getIslamicDateMonth();
+  const currentIslamicDateYear = getIslamicDateMonthYear();
 
   useEffect(() => {
     const prayerData = JSON.parse(
@@ -32,7 +28,10 @@ function App() {
 
   return (
     <>
-      <Navigation setOpenModal={setOpenModal} />
+      <Navigation
+        setOpenModal={setOpenModal}
+        todaysDate={currentIslamicDateYear}
+      />
       <WelcomeModal open={openModal} setOpen={setOpenModal} />
       <div className="min-h-[90vh]">
         <div className="flex justify-center">
