@@ -22,7 +22,9 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Change to string
   const [showIncorrectAnswerMessage, setShowIncorrectAnswerMessage] =
     useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean | null>(
+    null
+  );
 
   useEffect(() => {
     getSurahs();
@@ -85,7 +87,7 @@ const Quiz = () => {
         </CardDescription>
         <CardTitle>
           <p className="mb-5">In which surah does the following ayath come: </p>
-          <p className="mb-5 tracking-widest font-light text-3xl leading-14">
+          <p className="mb-5 tracking-wide font-light text-3xl leading-14">
             {quizData?.data[currentQuestionIndex].question}
           </p>
           {showIncorrectAnswerMessage && (
