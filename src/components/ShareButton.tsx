@@ -1,4 +1,6 @@
+import { Share2 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 const ShareButton = () => {
   const [saving, setSaving] = useState(false); // State for managing button disable
@@ -30,13 +32,15 @@ const ShareButton = () => {
   };
 
   return (
-    <button
+    <Button
       onClick={handleShare}
-      disabled={saving} // Disable button while sharing
-      className="rounded-full p-2 border-2 text-xs mr-2"
+      disabled={saving}
+      size={"icon"}
+      variant={"outline"}
+      className="mr-2 bg-[var(--background)] text-black dark:text-white"
     >
-      {saving ? "Sharing..." : "Share this with friends and family"}
-    </button>
+      {saving ? "Sharing..." : <Share2 />}
+    </Button>
   );
 };
 

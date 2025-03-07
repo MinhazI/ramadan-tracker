@@ -85,7 +85,7 @@ const Counter = ({
   };
 
   return (
-    <Card className="text-center">
+    <Card className="text-center max-w-full md:max-w-[500px] h-max">
       <CardHeader>
         <CardTitle>Tharaweeh Counter</CardTitle>
         <CardDescription>
