@@ -44,26 +44,39 @@ const Quiz = () => {
   );
   const [retries, setRetries] = useState<number>(0);
   const [results, setResults] = useState<iResult[]>([]);
+  const [quranLevel, setQuranLevel] = useState<number>(0);
 
   useEffect(() => {
-    getSurahs();
+    const currentQuranLevel = localStorage.getItem("quranLevel");
+    if (currentQuranLevel) {
+      setQuranLevel(Number(currentQuranLevel));
+    } else {
+      setQuranLevel(1);
+    }
   }, []);
 
-  const getSurahs = async () => {
+  useEffect(() => {
+    getSurahs(quranLevel);
+  }, [quranLevel]);
+
+  const getSurahs = async (level: number) => {
     const data = await guessSurah.bySurah({
       amount: 10,
-      select: generateNumbersForQuranQuiz(),
+      select: generateNumbersForQuranQuiz(level || 1),
     });
 
     setQuizData(data);
   };
 
-  const playAgain = async () => {
+  const playAgain = async (level: number) => {
+    localStorage.setItem("quranLevel", level.toString());
+    setQuranLevel(level);
     setCurrentQuestionIndex(0);
     setNextButtonDisabled(false);
     setPreviousButtonDisabled(true);
     setShowSuccessMessage(false);
-    getSurahs();
+    setResults([]);
+    getSurahs(level);
   };
 
   const submit = (questionTitle: string) => {
@@ -130,11 +143,12 @@ const Quiz = () => {
           {` Qu'ran Question ${currentQuestionIndex + 1} of 10`}
         </CardHeader>
         <CardDescription>
-          Test your knowledge on the Qu'ran by answering this quiz
+          Test your knowledge on the Qu'ran by answering this quiz (Level{" "}
+          {quranLevel})
         </CardDescription>
         <CardTitle>
           <p className="mb-5">In which surah does the following ayath come: </p>
-          <p className="mb-5 tracking-wide font-light text-3xl leading-14">
+          <p className="tracking-wide font-light text-3xl leading-14">
             {quizData?.data[currentQuestionIndex].question}
           </p>
           {showIncorrectAnswerMessage && (
@@ -151,6 +165,9 @@ const Quiz = () => {
           )}
         </CardTitle>
         <CardContent>
+          <p className="mb-5 text-gray-400 text-sm">
+            You have <span className="font-bold">{2 - retries}</span> retries
+          </p>
           <RadioGroup
             value={selectedAnswer || ""}
             onValueChange={(value) => setSelectedAnswer(value)}
@@ -190,40 +207,46 @@ const Quiz = () => {
       </Card>
     );
   } else if (showSuccessMessage) {
-    console.log(results);
     return (
-      <Card className="p-5 max-w-full md:max-w-[600px] text-center mx-auto">
+      <Card className="p-5 max-w-full md:max-w-[500px] text-center mx-auto">
         <CardHeader className="text-center text-2xl font-semibold mb-4">
           Your Quiz Results
         </CardHeader>
         <CardContent>
           {showSuccessMessage && (
             <Table className="mx-auto text-center">
-              <TableHeader>
+              <TableHeader className="">
                 <TableRow>
-                  <TableHead className="text-center">No.</TableHead>
+                  <TableHead className="text-center w-[40px]">#</TableHead>
+                  <TableHead className="text-center w-[40px]">✓</TableHead>
                   <TableHead className="text-center">Question</TableHead>
-                  <TableHead className="text-center">Retries</TableHead>
-                  <TableHead className="text-center">Correct?</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {results.map((result, key) => (
-                  <TableRow key={key} className="text-center">
-                    <TableCell className="text-center">
-                      #{result.questionIndex + 1}
+                  <TableRow key={key} className="transition">
+                    <TableCell className="text-center font-semibold">
+                      {result.questionIndex + 1}
                     </TableCell>
-                    <TableCell className="text-center">
-                      {result.questionTitle}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {result.numberOfRetries}
-                    </TableCell>
-                    <TableCell className="text-center">
+                    <TableCell className="text-center flex justify-center">
                       {result.missedTheAnswer ? (
-                        <CircleX color="var(--destructive)" />
+                        <CircleX
+                          color="var(--destructive)"
+                          aria-label="Wrong"
+                        />
                       ) : (
-                        <CircleCheck color="var(--primary)" />
+                        <CircleCheck
+                          color="var(--primary)"
+                          aria-label="Correct"
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell className="text-left">
+                      {result.questionTitle}{" "}
+                      {result.numberOfRetries > 0 && (
+                        <span className="text-sm text-gray-500 ml-2">
+                          (🔄 {result.numberOfRetries})
+                        </span>
                       )}
                     </TableCell>
                   </TableRow>
@@ -238,7 +261,10 @@ const Quiz = () => {
               Ready for a new challenge? Click below to start again with fresh
               questions!
             </p>
-            <Button variant={"outline"} onClick={() => playAgain()}>
+            <Button
+              variant={"outline"}
+              onClick={() => playAgain(quranLevel + 1)}
+            >
               Play Again <RefreshCwIcon />
             </Button>
           </div>
