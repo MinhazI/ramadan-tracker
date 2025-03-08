@@ -13,12 +13,12 @@ const Navigation = ({ setOpenModal, todaysDate }: iNavigation) => {
         <h1 className="font-bold">Ramadan Tracker</h1>
         <span className="text-xs">{todaysDate}</span>
       </div>
-      <div className="hidden md:flex items-center space-x-9">
+      {/* <div className="hidden md:flex items-center space-x-9">
         <Link to={ROUTES.HOME}>Home</Link>
         <Link to={ROUTES.THARAWEEH}>Tharaweeh</Link>
         <Link to={ROUTES.QUIZ}>Quiz</Link>
         <Link to={ROUTES.DUAS}>Duas</Link>
-      </div>
+      </div> */}
       <div className="flex-1/2 text-right py-2">
         <ShareButton />
         <ModeToggle />
