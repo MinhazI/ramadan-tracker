@@ -10,6 +10,7 @@ import Quiz from "./pages/Quiz";
 import Home from "./pages/Home"; // You need a home page
 import Tharaweeh from "./pages/Tharaweeh";
 import ROUTES from "./constants/routes";
+import MobileNavigation from "./components/MobileNavigation";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -31,6 +32,7 @@ function App() {
       </Routes>
 
       <WelcomeModal open={openModal} setOpen={setOpenModal} />
+      <MobileNavigation />
       <Footer />
     </BrowserRouter>
   );
