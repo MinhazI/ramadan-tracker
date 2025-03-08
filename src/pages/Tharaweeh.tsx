@@ -21,13 +21,15 @@ const Tharaweeh = () => {
   }, [currentIslamicDate]);
   return (
     <>
-      <Counter
-        tharaweehCount={tharaweehCount}
-        setTharaweehCount={setTharaweehCount}
-        currentIslamicDate={currentIslamicDate}
-      />
-      <div className="items-center">
-        <TharaweehHistory prayerData={prayerData} />
+      <div className="flex flex-col gap-7">
+        <Counter
+          tharaweehCount={tharaweehCount}
+          setTharaweehCount={setTharaweehCount}
+          currentIslamicDate={currentIslamicDate}
+        />
+        <div className="items-center">
+          <TharaweehHistory prayerData={prayerData} />
+        </div>
       </div>
     </>
   );

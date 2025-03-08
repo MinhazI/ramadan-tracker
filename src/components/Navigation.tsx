@@ -2,8 +2,8 @@ import { Info } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 import ShareButton from "./ShareButton";
 import { Button } from "./ui/button";
-import { Link } from "react-router";
-import ROUTES from "@/constants/routes";
+// import { Link } from "react-router";
+// import ROUTES from "@/constants/routes";
 import iNavigation from "@/interfaces/iNavigation";
 
 const Navigation = ({ setOpenModal, todaysDate }: iNavigation) => {
