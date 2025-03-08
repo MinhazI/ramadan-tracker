@@ -1,58 +1,40 @@
-import { useEffect, useState } from "react";
-import Counter from "./components/Counter";
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router"; // Use BrowserRouter
 import Footer from "./components/Footer";
 import Navigation from "./components/Navigation";
-import TharaweehHistory from "./components/TharaweehHistory";
-import iPrayer from "./interfaces/iPrayer";
 import WelcomeModal from "./components/WelcomeModal";
-import Quiz from "./components/Quiz";
-import { getIslamicDateMonth, getIslamicDateMonthYear } from "./utils/Date";
+import { getIslamicDateMonthYear } from "./utils/Date";
+import Duas from "./pages/Duas";
+import NotFound from "./pages/NotFound";
+import Quiz from "./pages/Quiz";
+import Home from "./pages/Home"; // You need a home page
+import Tharaweeh from "./pages/Tharaweeh";
+import ROUTES from "./constants/routes";
+// import MobileNavigation from "./components/MobileNavigation";
 
 function App() {
-  const [tharaweehCount, setTharaweehCount] = useState(0);
-  const [prayerData, setPrayerData] = useState({} as iPrayer);
   const [openModal, setOpenModal] = useState(false);
-
-  const currentIslamicDate = getIslamicDateMonth();
   const currentIslamicDateYear = getIslamicDateMonthYear();
 
-  useEffect(() => {
-    const prayerData = JSON.parse(
-      localStorage.getItem("ramadanTracker") || "{}"
-    );
-
-    setPrayerData(prayerData || {});
-
-    setTharaweehCount(prayerData[currentIslamicDate]?.tharaweehCount || 0);
-  }, [currentIslamicDate]);
-
   return (
-    <>
+    <BrowserRouter>
       <Navigation
         setOpenModal={setOpenModal}
         todaysDate={currentIslamicDateYear}
       />
-      <WelcomeModal open={openModal} setOpen={setOpenModal} />
-      <div className="min-h-[90vh]">
-        <div className="flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 w-full px-4">
-            <Quiz />
 
-            <div className="flex flex-col gap-7">
-              <Counter
-                tharaweehCount={tharaweehCount}
-                setTharaweehCount={setTharaweehCount}
-                currentIslamicDate={currentIslamicDate}
-              />
-              <div className="items-center">
-                <TharaweehHistory prayerData={prayerData} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.QUIZ} element={<Quiz />} />
+        <Route path={ROUTES.DUAS} element={<Duas />} />
+        <Route path={ROUTES.THARAWEEH} element={<Tharaweeh />} />
+        <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
+      </Routes>
+
+      <WelcomeModal open={openModal} setOpen={setOpenModal} />
+      {/* <MobileNavigation /> */}
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 

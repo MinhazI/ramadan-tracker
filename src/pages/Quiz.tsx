@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import generateNumbersForQuranQuiz from "@/utils/generateNumbersForQuranQuiz";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "@/components/ui/card";
 import {
   TableHeader,
   TableRow,
@@ -20,7 +20,7 @@ import {
   TableBody,
   Table,
   TableCell,
-} from "./ui/table";
+} from "@/components/ui/table";
 import { CircleCheck, CircleX } from "lucide-react";
 
 interface iResult {
