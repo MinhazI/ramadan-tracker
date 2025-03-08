@@ -1,17 +1,12 @@
 export default function generateNumbersForQuranQuiz(level: number): number[] {
     const numbers = new Set<number>();
-    let minNumber = 105; // Base range for level 1
-    const maxNumber = 114; // Fixed upper limit
 
-    if (level === 1) {
-        minNumber = 105; // Level 1: 105 - 114
-    } else if (level === 2) {
-        minNumber = 95; // Level 2: 95 - 114
-    } else if (level === 3) {
-        minNumber = 85; // Level 3: 85 - 114
-    } else if (level >= 4) {
-        minNumber = Math.max(1, 105 - (level - 1) * 10); // Ensuring it doesn't go below 1
-    }
+    // Limit level to a maximum of 12
+    const cappedLevel = Math.min(level, 12);
+
+    // Calculate min and max dynamically based on level
+    const minNumber = Math.max(1, 105 - (cappedLevel - 1) * 10);
+    const maxNumber = Math.max(5, 114 - (cappedLevel - 1) * 10);
 
     while (numbers.size < 4) {
         const randomNum = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;

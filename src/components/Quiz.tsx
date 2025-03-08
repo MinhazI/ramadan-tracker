@@ -21,7 +21,7 @@ import {
   Table,
   TableCell,
 } from "./ui/table";
-import { CircleCheck, CircleX, RefreshCwIcon } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 
 interface iResult {
   questionTitle: string;
@@ -45,6 +45,9 @@ const Quiz = () => {
   const [retries, setRetries] = useState<number>(0);
   const [results, setResults] = useState<iResult[]>([]);
   const [quranLevel, setQuranLevel] = useState<number>(0);
+  const correctAnswers = results.filter(
+    (result) => !result.missedTheAnswer
+  ).length;
 
   useEffect(() => {
     const currentQuranLevel = localStorage.getItem("quranLevel");
@@ -69,14 +72,16 @@ const Quiz = () => {
   };
 
   const playAgain = async (level: number) => {
-    localStorage.setItem("quranLevel", level.toString());
-    setQuranLevel(level);
-    setCurrentQuestionIndex(0);
-    setNextButtonDisabled(false);
-    setPreviousButtonDisabled(true);
-    setShowSuccessMessage(false);
-    setResults([]);
-    getSurahs(level);
+    if (level <= 12) {
+      localStorage.setItem("quranLevel", level.toString());
+      setQuranLevel(level);
+      setCurrentQuestionIndex(0);
+      setNextButtonDisabled(false);
+      setPreviousButtonDisabled(true);
+      setShowSuccessMessage(false);
+      setResults([]);
+      getSurahs(level);
+    }
   };
 
   const submit = (questionTitle: string) => {
@@ -84,7 +89,9 @@ const Quiz = () => {
     const selectedOption = quizData?.data[currentQuestionIndex].options.find(
       (option) => option.text === selectedAnswer
     );
+
     if (selectedOption?.value === 1) {
+      // Correct answer
       setResults((prevResults) => [
         ...prevResults,
         {
@@ -96,12 +103,14 @@ const Quiz = () => {
         },
       ]);
       setSelectedAnswer(null);
-      GoToNextQuestion();
+      GoToNextQuestion(); // Move to the next question
     } else {
+      // Incorrect answer
       if (retries < 2) {
         setShowIncorrectAnswerMessage(true);
-        setRetries(retries + 1);
+        setRetries(retries + 1); // Increment retries
       } else {
+        // Retries exhausted
         setResults((prevResults) => [
           ...prevResults,
           {
@@ -112,19 +121,20 @@ const Quiz = () => {
             missedTheAnswer: true,
           },
         ]);
-        GoToNextQuestion();
+        setSelectedAnswer(null); // Reset selected answer
+        GoToNextQuestion(); // Move to the next question
       }
     }
   };
 
   const GoToNextQuestion = () => {
-    setRetries(0);
+    setRetries(0); // Reset retries for the next question
     if (currentQuestionIndex < 9) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setPreviousButtonDisabled(false);
+      setCurrentQuestionIndex(currentQuestionIndex + 1); // Move to the next question
+      setPreviousButtonDisabled(false); // Enable the "Previous" button
     } else {
-      setNextButtonDisabled(true);
-      setShowSuccessMessage(true);
+      setNextButtonDisabled(true); // Disable the "Next" button if it's the last question
+      setShowSuccessMessage(true); // Show the success message
     }
   };
 
@@ -213,6 +223,11 @@ const Quiz = () => {
           Your Quiz Results
         </CardHeader>
         <CardContent>
+          You got{" "}
+          <span className="font-bold text-primary text-xl">
+            {correctAnswers}
+          </span>{" "}
+          out of 10 correct!
           {showSuccessMessage && (
             <Table className="mx-auto text-center">
               <TableHeader className="">
@@ -259,13 +274,13 @@ const Quiz = () => {
           <div className="mt-5 text-center">
             <p className="text-sm mb-5">
               Ready for a new challenge? Click below to start again with fresh
-              questions!
+              questions, level {quranLevel + 1}!
             </p>
             <Button
               variant={"outline"}
               onClick={() => playAgain(quranLevel + 1)}
             >
-              Play Again <RefreshCwIcon />
+              Play Level {quranLevel + 1}
             </Button>
           </div>
         </CardFooter>
