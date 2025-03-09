@@ -19,7 +19,6 @@ function App() {
   const currentIslamicDateYear = getIslamicDateMonthYear();
 
   useEffect(() => {
-    // Log page view on app load
     logEvent(fbAnalytics, "page_view");
   }, []);
 
