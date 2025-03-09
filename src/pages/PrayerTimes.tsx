@@ -61,6 +61,7 @@ const PrayerTimes = () => {
     <Card className="text-center max-w-full md:max-w-[500px]">
       <CardHeader>
         <CardTitle>Prayer Times</CardTitle>
+        <p className="text-xs mb-3">(For Sri Lanka)</p>
         <CardDescription>
           <h2>
             {getFullDate(`${prayerTimes?.month} ${prayerTimes?.day}`)} |{" "}
