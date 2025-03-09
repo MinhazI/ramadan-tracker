@@ -44,19 +44,19 @@ const PrayerTimes = () => {
   const getPrayerIcon = (name: string) => {
     switch (name) {
       case "Subahu":
-        return <FaSun className="text-yellow-200" />;
+        return <FaSun size={14} className="text-yellow-200" />;
       case "Sunrise":
         return <Sunrise size={14} className="text-yellow-500" />;
       case "Zuhr":
-        return <FaCloudSun className="text-yellow-400" />;
+        return <FaCloudSun size={14} className="text-yellow-400" />;
       case "Asar":
-        return <FaCloudSun className="text-orange-200" />;
+        return <FaCloudSun size={14} className="text-orange-200" />;
       case "Maghrib":
-        return <FaSun className="text-gray-500" />;
+        return <FaSun size={14} className="text-gray-500" />;
       case "Esha":
-        return <FaMoon className="text-gray-700" />;
+        return <FaMoon size={14} className="text-gray-700" />;
       default:
-        return <FaCoffee className="text-gray-500" />;
+        return <FaCoffee size={14} className="text-gray-500" />;
     }
   };
 

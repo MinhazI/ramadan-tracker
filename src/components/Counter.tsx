@@ -20,6 +20,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { logEvent } from "firebase/analytics";
+import { fbAnalytics } from "@/utils/firebase";
 
 interface iCounter {
   tharaweehCount: number;
@@ -44,6 +46,7 @@ const Counter = ({
   };
 
   const addPrayerCount = () => {
+    logEvent(fbAnalytics, "tharaweeh_count");
     if (tharaweehCount < 10) {
       setTharaweehCount(tharaweehCount + 1);
       savePrayer(tharaweehCount + 1);

@@ -22,6 +22,8 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { CircleCheck, CircleX } from "lucide-react";
+import { logEvent } from "firebase/analytics";
+import { fbAnalytics } from "@/utils/firebase";
 
 interface iResult {
   questionTitle: string;
@@ -85,6 +87,7 @@ const Quiz = () => {
   };
 
   const submit = (questionTitle: string) => {
+    logEvent(fbAnalytics, "quiz_submitted");
     setShowIncorrectAnswerMessage(false);
     const selectedOption = quizData?.data[currentQuestionIndex].options.find(
       (option) => option.text === selectedAnswer
