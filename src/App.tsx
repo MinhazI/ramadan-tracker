@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router"; // Use BrowserRouter
 import Footer from "./components/Footer";
 import Navigation from "./components/Navigation";
@@ -10,11 +10,18 @@ import Home from "./pages/Home"; // You need a home page
 import Tharaweeh from "./pages/Tharaweeh";
 import ROUTES from "./constants/routes";
 import { getIslamicDateMonthYear } from "./utils/date";
+import { logEvent } from "firebase/analytics";
+import { fbAnalytics } from "./utils/firebase";
 // import MobileNavigation from "./components/MobileNavigation";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
   const currentIslamicDateYear = getIslamicDateMonthYear();
+
+  useEffect(() => {
+    // Log page view on app load
+    logEvent(fbAnalytics, "page_view");
+  }, []);
 
   return (
     <BrowserRouter>
