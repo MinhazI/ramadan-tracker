@@ -45,3 +45,13 @@ export const getDate = () => {
 export const getMonth = () => {
     return DateTime.now().setZone(userTimeZone).toFormat("LLLL")
 }
+
+export const getAMPMTime = (time: string) => {
+    const dateTime = DateTime.fromFormat(time, "HH:mm");
+    return dateTime.toFormat('hh:mm a')
+}
+
+export const getFullDate = (date: string) => {
+    const newDate = DateTime.fromFormat(date, "LLLL d");
+    return newDate.toFormat("LLLL dd yyyy")
+}

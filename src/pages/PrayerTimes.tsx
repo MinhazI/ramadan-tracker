@@ -6,7 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import iPrayerTime from "@/interfaces/iPrayerTime";
-import { getDate, getIslamicDateMonthYear, getMonth } from "@/utils/date";
+import {
+  getAMPMTime,
+  getDate,
+  getFullDate,
+  getIslamicDateMonthYear,
+  getMonth,
+} from "@/utils/date";
 import getPrayerTimes from "@/utils/getPrayerTimes";
 import { useEffect, useState } from "react";
 import {
@@ -43,9 +49,9 @@ const PrayerTimes = () => {
       case "Asar":
         return <FaCloudSun className="text-orange-200" />;
       case "Maghrib":
-        return <FaSun className="text-gray-900" />;
+        return <FaSun className="text-gray-500" />;
       case "Esha":
-        return <FaMoon className="text-black" />;
+        return <FaMoon className="text-gray-700" />;
       default:
         return <FaCoffee className="text-gray-500" />;
     }
@@ -57,15 +63,15 @@ const PrayerTimes = () => {
         <CardTitle>Prayer Times</CardTitle>
         <CardDescription>
           <h2>
-            {prayerTimes?.day}, {prayerTimes?.month}
+            {getFullDate(`${prayerTimes?.month} ${prayerTimes?.day}`)} |{" "}
+            {getIslamicDateMonthYear()}
           </h2>
-          <h3>{getIslamicDateMonthYear()}</h3>
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Table className="w-full rounded-4xl">
+        <Table className="w-full rounded-4xl min-h-fit">
           <TableHeader>
-            <TableRow className="w-full bg-slate-500 dark:bg-slate-950">
+            <TableRow className="w-full bg-slate-500 dark:bg-black">
               <TableHead className="w-1/2 text-dark dark:text-white font-bold">
                 Prayer
               </TableHead>
@@ -76,17 +82,32 @@ const PrayerTimes = () => {
           </TableHeader>
           <TableBody className="text-left">
             {[
-              { name: "Subahu", time: prayerTimes?.prayerTimes.Subahu },
-              { name: "Zuhr", time: prayerTimes?.prayerTimes.Zuhr },
-              { name: "Asar", time: prayerTimes?.prayerTimes.Asar },
-              { name: "Maghrib", time: prayerTimes?.prayerTimes.Maghrib },
-              { name: "Esha", time: prayerTimes?.prayerTimes.Esha },
+              {
+                name: "Subahu",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Subahu || ""),
+              },
+              {
+                name: "Zuhr",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Zuhr || ""),
+              },
+              {
+                name: "Asar",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Asar || ""),
+              },
+              {
+                name: "Maghrib",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Maghrib || ""),
+              },
+              {
+                name: "Esha",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Esha || ""),
+              },
             ].map((prayer, index) => (
               <TableRow
                 key={index}
                 className={`border-t border-primary dark:border-slate-500 ${
                   index % 2 === 0
-                    ? "bg-slate-400 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                    ? "bg-slate-400 dark:bg-gray-950 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
                     : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
                 }`}
               >
