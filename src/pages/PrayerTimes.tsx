@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FaSun, FaMoon, FaCloudSun, FaCoffee } from "react-icons/fa"; // React Icons
+import { Sunrise } from "lucide-react";
 
 const PrayerTimes = () => {
   const currentDate = getDate();
@@ -43,7 +44,9 @@ const PrayerTimes = () => {
   const getPrayerIcon = (name: string) => {
     switch (name) {
       case "Subahu":
-        return <FaSun className="text-yellow-500" />;
+        return <FaSun className="text-yellow-200" />;
+      case "Sunrise":
+        return <Sunrise size={14} className="text-yellow-500" />;
       case "Zuhr":
         return <FaCloudSun className="text-yellow-400" />;
       case "Asar":
@@ -61,7 +64,10 @@ const PrayerTimes = () => {
     <Card className="text-center max-w-full md:max-w-[500px]">
       <CardHeader>
         <CardTitle>Prayer Times</CardTitle>
-        <p className="text-xs mb-3">(For Sri Lanka)</p>
+        <p className="text-xs mb-3 text-gray-400">
+          (Applicable in Sri Lanka and most accurate for the Western, Northern,
+          and Southern provinces.)
+        </p>
         <CardDescription>
           <h2>
             {getFullDate(`${prayerTimes?.month} ${prayerTimes?.day}`)} |{" "}
@@ -84,8 +90,16 @@ const PrayerTimes = () => {
           <TableBody className="text-left">
             {[
               {
+                name: "Sahar Ends",
+                time: getAMPMTime(prayerTimes?.prayerTimes.SaharEnds || ""),
+              },
+              {
                 name: "Subahu",
                 time: getAMPMTime(prayerTimes?.prayerTimes.Subahu || ""),
+              },
+              {
+                name: "Sunrise",
+                time: getAMPMTime(prayerTimes?.prayerTimes.Sunrise || ""),
               },
               {
                 name: "Zuhr",
@@ -103,21 +117,37 @@ const PrayerTimes = () => {
                 name: "Esha",
                 time: getAMPMTime(prayerTimes?.prayerTimes.Esha || ""),
               },
-            ].map((prayer, index) => (
-              <TableRow
-                key={index}
-                className={`border-t border-primary dark:border-slate-500 ${
-                  index % 2 === 0
-                    ? "bg-slate-400 dark:bg-gray-950 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
-                    : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-                }`}
-              >
-                <TableCell className="w-1/2 p-2 flex items-center gap-2">
-                  {getPrayerIcon(prayer.name)} {prayer.name}
-                </TableCell>
-                <TableCell className="w-1/2 p-2">{prayer.time}</TableCell>
-              </TableRow>
-            ))}
+            ].map((prayer, index) =>
+              prayer.name === "Sahar Ends" && prayer.time.length > 0 ? (
+                <TableRow
+                  key={index}
+                  className={`border-t border-primary dark:border-slate-500 ${
+                    index % 2 === 0
+                      ? "bg-slate-400 dark:bg-gray-950 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                      : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+                  }`}
+                >
+                  <TableCell className="w-1/2 p-2 flex items-center gap-2">
+                    {getPrayerIcon(prayer.name)} {prayer.name}
+                  </TableCell>
+                  <TableCell className="w-1/2 p-2">{prayer.time}</TableCell>
+                </TableRow>
+              ) : (
+                <TableRow
+                  key={index}
+                  className={`border-t border-primary dark:border-slate-500 ${
+                    index % 2 === 0
+                      ? "bg-slate-400 dark:bg-gray-950 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                      : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+                  }`}
+                >
+                  <TableCell className="w-1/2 p-2 flex items-center gap-2">
+                    {getPrayerIcon(prayer.name)} {prayer.name}
+                  </TableCell>
+                  <TableCell className="w-1/2 p-2">{prayer.time}</TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
         </Table>
       </CardContent>

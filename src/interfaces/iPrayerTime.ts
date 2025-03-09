@@ -3,6 +3,7 @@ export default interface iPrayerTime {
     month: string,
     prayerTimes: {
         Subahu: string,
+        SaharEnds: string,
         Sunrise: string,
         Zuhr: string,
         Asar: string,
