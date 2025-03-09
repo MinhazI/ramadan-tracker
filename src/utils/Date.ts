@@ -33,3 +33,15 @@ export const getIslamicDateMonthYear = () => {
             .toFormat("LLLL dd yyyy");
     }
 }
+
+export const getDateMonth = () => {
+    return DateTime.now().setZone(userTimeZone).toFormat("LLL dd")
+}
+
+export const getDate = () => {
+    return DateTime.now().setZone(userTimeZone).toFormat("dd");
+}
+
+export const getMonth = () => {
+    return DateTime.now().setZone(userTimeZone).toFormat("LLLL")
+}

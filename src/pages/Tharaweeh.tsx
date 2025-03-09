@@ -1,7 +1,7 @@
 import Counter from "@/components/Counter";
 import TharaweehHistory from "@/components/TharaweehHistory";
 import iPrayer from "@/interfaces/iPrayer";
-import { getIslamicDateMonth } from "@/utils/Date";
+import { getIslamicDateMonth } from "@/utils/date";
 import { useEffect, useState } from "react";
 
 const Tharaweeh = () => {

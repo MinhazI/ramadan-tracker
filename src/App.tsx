@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router"; // Use BrowserRoute
 import Footer from "./components/Footer";
 import Navigation from "./components/Navigation";
 import WelcomeModal from "./components/WelcomeModal";
-import { getIslamicDateMonthYear } from "./utils/Date";
 import Duas from "./pages/Duas";
 import NotFound from "./pages/NotFound";
 import Quiz from "./pages/Quiz";
 import Home from "./pages/Home"; // You need a home page
 import Tharaweeh from "./pages/Tharaweeh";
 import ROUTES from "./constants/routes";
+import { getIslamicDateMonthYear } from "./utils/date";
 // import MobileNavigation from "./components/MobileNavigation";
 
 function App() {
